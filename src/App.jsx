@@ -9,10 +9,13 @@ import Trade from "./components/Trade.jsx";
 import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
 import Icons from "./components/Icons.jsx";
+import DivisionDialog from "./components/DivisionDialog.jsx";
 import Landscape from "./components/Landscape.jsx";
+import Harvest from "./components/Harvest.jsx";
 import usePageMotion from "./hooks/usePageMotion.js";
 
 export default function App() {
+  const [selectedDivision, setSelectedDivision] = useState(null);
   const [interest, setInterest] = useState("");
   const nameRef = useRef(null);
   const pageRef = useRef(null);
@@ -20,6 +23,7 @@ export default function App() {
 
   function handleEnquire(division) {
     setInterest(division.interest);
+    setSelectedDivision(null);
     requestAnimationFrame(() => {
       document.getElementById("contact").scrollIntoView({
         behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -45,11 +49,12 @@ export default function App() {
           <div><span>MILLED HERE</span><strong>Animal feed</strong></div>
           <div><span>DELIVERED</span><strong>Across Ghana</strong></div>
         </div>
-        <Divisions onEnquire={handleEnquire} />
+        <Divisions onSelect={setSelectedDivision} />
         <Story />
         <Landscape />
         <Difference />
-        <Trade onEnquire={() => handleEnquire(catalogue.fertilizer)} />
+        <Trade onSelect={setSelectedDivision} />
+        <Harvest />
         <Contact
           interest={interest}
           onInterestChange={setInterest}
@@ -57,6 +62,14 @@ export default function App() {
         />
       </main>
       <Footer />
+      {selectedDivision && (
+        <DivisionDialog
+          divisionKey={selectedDivision}
+          division={catalogue[selectedDivision]}
+          onClose={() => setSelectedDivision(null)}
+          onEnquire={handleEnquire}
+        />
+      )}
       <Icons />
     </div>
   );
