@@ -1,4 +1,6 @@
-import { photography, photoSource } from "../data/photography.js";
+import { photography, photoSource, stockPhotos } from "../data/photography.js";
+
+const allPhotos = Object.keys(photography).length;
 
 export default function Footer() {
   return (
@@ -34,15 +36,19 @@ export default function Footer() {
                 aria-label="Ghana flag"
               ></span>
             </span>
-            <span className="image-credit">
-              Agricultural imagery is illustrative.
-            </span>
+            {stockPhotos.length > 0 && (
+              <span className="image-credit">
+                {stockPhotos.length === allPhotos ? "Agricultural imagery is illustrative." : "Some imagery is illustrative stock photography."}
+              </span>
+            )}
           </div>
-          <details className="photo-credits">
-            <summary>Photography & credits</summary>
-            <p>Real agricultural photography sourced from Pexels. These images illustrate our work and products; they do not depict J&O’s farm or team. Used under the <a href="https://www.pexels.com/license/" target="_blank" rel="noopener noreferrer">Pexels License</a>.</p>
-            <ul>{Object.values(photography).map((photo) => <li key={photo.id}><a href={photoSource(photo)} target="_blank" rel="noopener noreferrer">{photo.file.replaceAll("-", " ")} ↗</a></li>)}</ul>
-          </details>
+          {stockPhotos.length > 0 && (
+            <details className="photo-credits">
+              <summary>Photography & credits</summary>
+              <p>Stock agricultural photography from Pexels. These images illustrate our work and products; they do not depict J&O’s farm or team. Used under the <a href="https://www.pexels.com/license/" target="_blank" rel="noopener noreferrer">Pexels License</a>.</p>
+              <ul>{stockPhotos.map((photo) => <li key={photo.id}><a href={photoSource(photo)} target="_blank" rel="noopener noreferrer">{photo.file.replaceAll("-", " ")} ↗</a></li>)}</ul>
+            </details>
+          )}
         </div>
       </footer>
     </>

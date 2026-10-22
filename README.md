@@ -49,3 +49,16 @@ Images are served locally from `public/assets/photos/` as responsive WebP files.
 GSAP and ScrollTrigger power the hero introduction, photo parallax, section reveals, filter transitions, scroll progress and the large scrolling typography. Animation setup lives in `src/hooks/usePageMotion.js`, with React cleanup and layout refreshes after filtering, opening divisions, font loading and responsive changes. Operating-system reduced-motion preferences disable the animations and parallax. Native scrolling and all content remain available without animation.
 
 Deployment configuration is in `.openai/hosting.json`.
+
+## Business details and J&O's own photos
+
+`src/data/business.js` holds the email address, company credentials and live site
+address. Fields left empty are not shown. Setting `siteUrl` (or `SITE_URL` when
+building) adds the canonical URL, link-preview image and `sitemap.xml`.
+
+To use one of J&O's own photos, run `node scripts/add-photo.mjs <photo> <name>`
+(add `--large` for full-width images) and point the matching entry in
+`src/data/photography.js` at it with `own: true`. The script removes the photo's
+location data. Stock-photo credits and the "illustrative" notice only cover the stock
+photos that remain. After replacing the hero photo, run
+`node scripts/make-share-image.mjs` to rebuild the link-preview image.

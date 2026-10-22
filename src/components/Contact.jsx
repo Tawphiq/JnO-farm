@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { business } from "../data/business.js";
 
 export default function Contact({ interest, onInterestChange, nameRef }) {
   const [enquiryUrl, setEnquiryUrl] = useState("");
@@ -57,6 +58,11 @@ export default function Contact({ interest, onInterestChange, nameRef }) {
             >
               Chat on WhatsApp <span aria-hidden="true">↗</span>
             </a>
+            {business.email && (
+              <a className="contact-email text-link" href={`mailto:${business.email}`}>
+                {business.email} <span aria-hidden="true">↗</span>
+              </a>
+            )}
             <div className="address">
               <svg>
                 <use href="#icon-pin" />

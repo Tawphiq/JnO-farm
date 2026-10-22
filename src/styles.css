@@ -199,6 +199,10 @@ p { color: var(--muted); }
 .trade-copy dt { font: 600 38px/1 var(--display); text-transform: uppercase; }
 .trade-copy dt span { font: 11px var(--mono); }
 .trade-copy dd { margin: 9px 0 0; font: 11px/1.5 var(--mono); color: #d0dbbf; }
+.trade-copy .trade-credentials { display: grid; grid-template-columns: max-content 1fr; gap: 8px 24px; margin-top: -12px; padding-block: 0 23px; border-top: 0; }
+.trade-credentials > div { display: contents; }
+.trade-copy .trade-credentials dt { font: 11px/1.6 var(--mono); text-transform: uppercase; color: #d0dbbf; }
+.trade-copy .trade-credentials dd { margin: 0; font: 500 13px/1.6 var(--sans); color: var(--cream); }
 .harvest-section { overflow: hidden; padding-bottom: 0; }
 .harvest-gallery { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 28px; }
 .harvest-gallery figure { position: relative; border: 1px solid var(--line); padding: 12px 12px 22px; }
@@ -220,6 +224,7 @@ p { color: var(--muted); }
 .contact-phone span { font: 23px var(--sans); }
 .contact-label { display: block; font: 11px/1.5 var(--mono); margin-top: 9px; }
 .contact-whatsapp { margin-top: 20px; }
+.contact-email { display: flex; margin-top: 8px; }
 .address { display: flex; gap: 14px; border-top: 1px solid #183d2b50; margin-top: 32px; padding-top: 26px; font-size: 13px; }
 .address svg { width: 23px; height: 23px; }
 .address strong { font-weight: 500; }

@@ -1,9 +1,9 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import { photography, photoSource } from "../src/data/photography.js";
+import { photoSource, stockPhotos } from "../src/data/photography.js";
 
 const directory = new URL("../public/assets/photos/", import.meta.url);
 await mkdir(directory, { recursive: true });
-for (const photo of Object.values(photography)) {
+for (const photo of stockPhotos) {
   for (const width of photo.large ? [640, 1280, 1920] : [640, 1280]) {
     const url = `https://images.pexels.com/photos/${photo.id}/pexels-photo-${photo.id}.jpeg?auto=compress&cs=tinysrgb&w=${width}&q=82&fm=webp`;
     const response = await fetch(url);
