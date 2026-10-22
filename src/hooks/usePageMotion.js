@@ -29,9 +29,8 @@ export default function usePageMotion(scope) {
         gsap.fromTo(frame.querySelector("img"), { yPercent: -7 }, { yPercent: 7, ease: "none", scrollTrigger: { trigger: frame, start: "top bottom", end: "bottom top", scrub: 0.7, invalidateOnRefresh: true } });
       });
       gsap.to(".landscape-title", { yPercent: -18, ease: "none", scrollTrigger: { trigger: ".landscape-section", start: "top bottom", end: "bottom top", scrub: 1 } });
-      gsap.fromTo(".marquee-track", { xPercent: 4 }, { xPercent: -16, ease: "none", scrollTrigger: { trigger: ".marquee", start: "top bottom", end: "bottom top", scrub: 1.2 } });
     }, root);
-    // Filters, fonts and responsive layout changes can move subsequent sections.
+    // Opening divisions, fonts and responsive layout changes can move subsequent sections.
     let frame;
     const refresh = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(() => ScrollTrigger.refresh()); };
     const observer = new ResizeObserver(refresh);

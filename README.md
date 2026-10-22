@@ -2,7 +2,7 @@
 
 A responsive React website built with Vite for Joseph & Owura Farm Produce Ltd.
 
-The visual identity follows a farm field guide: upright condensed headings, monospaced labels, forest green and clay orange, a photographic collage, and a numbered division directory. All typography is non-italic. The catalogue, native product dialogs and WhatsApp enquiry flow share this design system.
+The visual identity follows a farm field guide: upright condensed headings, monospaced labels, forest green and clay orange, a photographic collage, and a numbered division directory. All typography is non-italic. The expandable product directory and WhatsApp enquiry flow share this design system.
 
 ## Development
 
@@ -32,7 +32,7 @@ normally at http://localhost:4173. Deploy the contents of `dist/` to a static ho
 - `index.html`: page metadata and Vite entry point
 - `src/main.jsx`: React application entry point
 - `src/App.jsx`: page composition and division enquiry selection
-- `src/components/`: page sections, navigation, filters, enquiry form and native dialog
+- `src/components/`: page sections, navigation, product directory and enquiry form
 - `src/data/catalogue.js`: product and division details
 - `src/styles.css`: responsive design
 - `public/assets/`: locally hosted agricultural images and favicon
@@ -46,6 +46,6 @@ Agricultural photographs are real, illustrative stock photography from Pexels, n
 
 Images are served locally from `public/assets/photos/` as responsive WebP files. The hero is prioritised; subsequent images load lazily. To re-download the curated image set, run `node scripts/download-photos.mjs` from this directory. Fonts are served through Google Fonts with system fallbacks.
 
-GSAP and ScrollTrigger power the hero introduction, photo parallax, section reveals, filter transitions, scroll progress and the large scrolling typography. Animation setup lives in `src/hooks/usePageMotion.js`, with React cleanup and layout refreshes after filters, fonts and responsive changes. Operating-system reduced-motion preferences disable the animations and parallax. Native scrolling and all content remain available without animation.
+GSAP and ScrollTrigger power the hero introduction, photo parallax, section reveals and scroll progress. Animation setup lives in `src/hooks/usePageMotion.js`, with React cleanup and layout refreshes after filters, fonts and responsive changes. Operating-system reduced-motion preferences disable the animations and parallax. Native scrolling and all content remain available without animation.
 
 Deployment configuration is in `.openai/hosting.json`.
