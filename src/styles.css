@@ -8,7 +8,6 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 110px; }
 body { margin: 0; color: var(--green); background: var(--cream); font: 15px/1.7 var(--sans); -webkit-font-smoothing: antialiased; }
-body.modal-open { overflow: hidden; }
 em, i, address, cite, dfn, var { font-style: normal; }
 ::selection { background: var(--orange); color: var(--cream); }
 button, input, select, textarea { font: inherit; }
@@ -109,19 +108,36 @@ p { color: var(--muted); }
 .filter.active { background: var(--green); color: var(--cream); }
 .filter:hover:not(.active) { border-color: var(--line); }
 .division-grid { display: grid; grid-template-columns: 1fr; }
-.division-card { position: relative; display: grid; grid-template-columns: 25px 130px 1fr 30px; align-items: center; gap: 20px; width: 100%; min-width: 0; border: 0; border-bottom: 1px solid var(--line); padding: 25px 0; background: transparent; text-align: left; transition: background .25s; }
+.division-card { --num: 25px; --art: 130px; --gap: 20px; border-bottom: 1px solid var(--line); }
 .division-card[hidden] { display: none; }
-.division-card:hover { background: #e9e9dc; }
+.division-summary { position: relative; display: grid; grid-template-columns: var(--num) var(--art) 1fr 30px; align-items: center; gap: var(--gap); padding: 25px 0; transition: background .25s; }
+.division-summary:hover { background: #e9e9dc; }
+.division-toggle { all: unset; cursor: pointer; }
+.division-toggle::after { content: ""; position: absolute; inset: 0; }
+.division-toggle:focus-visible { outline: none; }
+.division-toggle:focus-visible::after { outline: 3px solid var(--orange); outline-offset: -3px; }
 .card-number { font: 11px var(--mono); align-self: start; margin-top: 3px; color: var(--orange); }
 .card-art { height: 125px; width: 100%; overflow: hidden; }
 .card-art .photo { transition: transform .7s cubic-bezier(.2,.6,.3,1); }
-.division-card:hover .photo, .division-card:focus-visible .photo { transform: scale(1.08); }
+.division-summary:is(:hover, :focus-within) .photo { transform: scale(1.08); }
 .card-body { min-width: 0; }
 .card-tag { display: block; font: 11px/1.7 var(--mono); letter-spacing: .5px; color: var(--muted); margin-bottom: 9px; }
 .card-body h3 { font-size: clamp(28px, 2.8vw, 40px); margin-bottom: 10px; }
 .card-body p { max-width: 310px; font-size: 12px; line-height: 1.65; }
-.card-open { font: 27px/1 var(--sans); justify-self: end; transition: transform .3s, color .3s; }
-.division-card:hover .card-open { color: var(--orange); transform: translate(3px, -3px); }
+.card-open { font: 300 34px/1 var(--sans); justify-self: end; pointer-events: none; transition: transform .3s, color .3s; }
+.division-summary:hover .card-open, .division-card.open .card-open { color: var(--orange); }
+.division-card.open .card-open { transform: rotate(45deg); }
+.division-products { padding: 0 30px 34px calc(var(--num) + var(--art) + var(--gap) * 2); animation: panel-in .35s ease-out; }
+@keyframes panel-in { from { opacity: 0; transform: translateY(-8px); } }
+.products-intro { max-width: 560px; font-size: 14px; color: var(--green); }
+.product-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0 32px; margin-top: 10px; }
+.product-group { padding-block: 18px; border-bottom: 1px solid var(--line); }
+.product-group h4 { margin: 0 0 10px; font: 600 22px/1 var(--display); text-transform: uppercase; }
+.product-group p { font-size: 13px; }
+.product-group ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.product-group li { padding: 6px 10px; background: #e5e8d8; font-size: 13px; line-height: 1.5; }
+.products-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; margin-top: 24px; }
+.products-footer p { max-width: 420px; font-size: 13px; }
 .division-note { display: flex; gap: 10px; align-items: center; margin-top: 24px; font: 11px/1.8 var(--mono); color: var(--muted); }
 .story-section { background: var(--paper); border-block: 1px solid var(--line); }
 .story-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid var(--green); }
@@ -246,27 +262,6 @@ footer { background: var(--deep); color: var(--cream); padding: 45px 0 25px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .skip-link { position: fixed; top: -100px; left: 16px; padding: 12px 20px; background: var(--green); color: white; z-index: 70; }
 .skip-link:focus { top: 12px; }
-dialog { width: min(760px, calc(100% - 40px)); max-height: 90vh; max-height: 90dvh; padding: 0; border: 1px solid var(--green); background: var(--cream); color: var(--green); box-shadow: 0 20px 100px #0004; overflow: hidden; }
-dialog[open] { display: flex; flex-direction: column; animation: dialog-in .3s ease-out; }
-dialog::backdrop { background: #102e22c9; backdrop-filter: blur(7px); }
-@keyframes dialog-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-.dialog-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 10px 16px 10px 32px; border-bottom: 1px solid var(--green); flex-shrink: 0; }
-.dialog-toolbar > span { font: 11px var(--mono); text-transform: uppercase; }
-.dialog-close { display: grid; place-items: center; background: transparent; border: 1px solid var(--line); width: 44px; height: 44px; font-size: 28px; line-height: 1; }
-.dialog-close:hover { background: var(--orange); color: white; }
-#dialog-content { overflow-y: auto; overscroll-behavior: contain; }
-.dialog-photo { height: 210px; }
-.dialog-header { padding: 30px 36px; background: var(--paper); }
-.dialog-header h2 { font-size: 48px; }
-.dialog-header > p { font-size: 14px; margin-top: 18px; }
-.dialog-products { padding: 0 36px 20px; }
-.product-group { padding: 22px 0; border-bottom: 1px solid var(--line); }
-.product-group h3 { font-size: 29px; margin-bottom: 10px; }
-.product-group p { font-size: 14px; }
-.product-group ul { padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
-.product-group li { font-size: 13px; padding: 6px 10px; background: #e5e8d8; }
-.dialog-footer { padding: 4px 36px 32px; }
-.dialog-footer > p { font-size: 13px; margin-bottom: 18px; }
 @media (min-width: 1600px) { .hero-collage { min-height: 725px; } }
 @media (max-width: 1100px) {
   .site-header { gap: 24px; }
@@ -282,7 +277,7 @@ dialog::backdrop { background: #102e22c9; backdrop-filter: blur(7px); }
   .hero-stamp strong { font-size: 60px; }
   .hero-image-caption { font-size: 11px; }
   .directory-layout { grid-template-columns: .7fr 1.4fr; gap: 35px; }
-  .division-card { grid-template-columns: 20px 100px 1fr 22px; gap: 14px; }
+  .division-card { --num: 20px; --art: 100px; --gap: 14px; }
   .card-art { height: 110px; }
   .card-tag { font-size: 11px; }
   .card-body h3 { font-size: 31px; }
@@ -341,7 +336,7 @@ dialog::backdrop { background: #102e22c9; backdrop-filter: blur(7px); }
   .directory-intro > p:not(.eyebrow) { margin-top: 5px; }
   .directory-key { padding-block: 20px 5px; }
   .directory-intro .text-link { margin-top: 15px; }
-  .division-card { grid-template-columns: 25px 145px 1fr 30px; gap: 22px; }
+  .division-card { --num: 25px; --art: 145px; --gap: 22px; }
   .card-art { height: 125px; }
   .card-tag { font-size: 11px; }
   .card-body h3 { font-size: 37px; }
@@ -472,14 +467,17 @@ dialog::backdrop { background: #102e22c9; backdrop-filter: blur(7px); }
   .filter-bar { gap: 1px; justify-content: space-between; padding-bottom: 16px; }
   .filter { white-space: nowrap; padding-inline: 10px; }
   .filter sup { display: none; }
-  .division-card { grid-template-columns: 18px 85px 1fr; gap: 12px; padding-block: 22px; }
+  .division-card { --num: 18px; --art: 85px; --gap: 12px; }
+  .division-summary { grid-template-columns: var(--num) var(--art) 1fr; padding-block: 22px; }
+  .division-products { padding: 0 0 28px; }
+  .products-footer .button { width: 100%; }
   .card-number { font-size: 11px; }
   .card-art { height: 110px; }
   .card-body { padding-right: 4px; }
   .card-tag { font-size: 11px; letter-spacing: .2px; margin-bottom: 7px; }
   .card-body h3 { font-size: 29px; margin-bottom: 8px; }
   .card-body p { font-size: 12px; }
-  .card-open { position: absolute; bottom: 15px; left: 0; font-size: 19px; }
+  .card-open { position: absolute; bottom: 15px; left: -3px; font-size: 26px; }
   .division-note { font-size: 11px; align-items: start; }
   .division-note .status-dot { margin-top: 4px; }
   .story-heading { margin-bottom: 30px; }
@@ -539,13 +537,6 @@ dialog::backdrop { background: #102e22c9; backdrop-filter: blur(7px); }
   .back-top { margin-left: auto; font-size: 11px; gap: 12px; }
   .footer-bottom { gap: 18px; font-size: 11px; }
   .image-credit { width: 100%; }
-  dialog { width: calc(100% - 24px); max-height: 92dvh; }
-  .dialog-toolbar { padding-left: 22px; }
-  .dialog-photo { height: 180px; }
-  .dialog-header { padding: 26px 22px; }
-  .dialog-header h2 { font-size: 40px; }
-  .dialog-products { padding-inline: 22px; }
-  .dialog-footer { padding-inline: 22px; }
 }
 @media (max-width: 360px) {
   .page-width { padding-inline: 18px; }
@@ -554,7 +545,7 @@ dialog::backdrop { background: #102e22c9; backdrop-filter: blur(7px); }
   .hero h1 { font-size: 86px; }
   .landscape-title { font-size: 65px; }
   .filter { padding-inline: 7px; font-size: 11px; }
-  .division-card { grid-template-columns: 16px 75px 1fr; gap: 10px; }
+  .division-card { --num: 16px; --art: 75px; --gap: 10px; }
   .card-body h3 { font-size: 27px; }
   .card-tag { font-size: 11px; letter-spacing: 0; }
   .hero-stamp { right: 0; }
@@ -564,6 +555,6 @@ dialog::backdrop { background: #102e22c9; backdrop-filter: blur(7px); }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .scroll-progress { display: none; }
   .parallax-photo img { top: 0; height: 100%; transform: none !important; }
-  .division-card:hover .photo, .division-card:focus-visible .photo { transform: none; }
+  .division-summary .photo { transform: none !important; }
 }
 
