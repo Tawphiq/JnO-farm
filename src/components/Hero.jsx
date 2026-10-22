@@ -20,7 +20,7 @@ export default function Hero() {
           <div className="field-label"><span className="field-cross" aria-hidden="true">+</span><span>FIELD NOTES / 001<br /><strong>It starts with the soil.</strong></span></div>
           <span className="hero-image-rail">CULTIVATION / CARE / CONNECTION</span>
           <Photo name="crops" className="hero-inset" sizes="(max-width: 700px) 42vw, 22vw" />
-          <div className="hero-stamp"><strong>06</strong><span>DIVISIONS.<br />ONE FARM.</span><span aria-hidden="true">↗</span></div>
+          <div className="hero-stamp"><strong>06</strong><span>DIVISIONS.<br />ONE FARM.</span></div>
           <span className="hero-image-caption">[ FROM THE FIRST SEED TO THE NEXT HARVEST ]</span>
         </div>
       </div>

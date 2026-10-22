@@ -3,3 +3,4 @@ dist/
 .sites-local/
 *.tar.gz
 *.log
+.ssr/

@@ -2,7 +2,7 @@
 
 export default function Trade({ onSelect }) {
   return (
-    <section className="trade-section" aria-labelledby="trade-title">
+    <section className="trade-section" id="trade" aria-labelledby="trade-title">
       <div className="trade-image"><Photo name="feed" parallax /><span className="trade-image-caption">RAW MATERIAL / MAIZE</span><span className="trade-image-word" aria-hidden="true">MORE<br />IN STORE.</span></div>
       <div className="trade-copy" data-reveal>
         <p className="eyebrow"><span className="section-number">04</span> THE SUPPLY DESK</p>

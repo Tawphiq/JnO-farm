@@ -13,7 +13,7 @@ export default function Difference() {
       <div className="section-heading" data-reveal><div><p className="eyebrow"><span className="section-number">03</span> HOW THE FARM WORKS</p><h2 id="difference-title">Connected by land.<br /><span className="accent">Built on work.</span></h2></div><p>Our crops, animals, feed and people are part of the same story. Here’s what that means when you work with J&O.</p></div>
       <div className="difference-layout">
         <div className="difference-visual"><Photo name="fertilizer" parallax /><div className="photo-label"><span aria-hidden="true">↳</span><span>THE STARTING POINT<br /><strong>Always, the soil.</strong></span></div></div>
-        <div className="principles">{principles.map((item, index) => <article className="principle" key={item.title} data-reveal><span className="principle-number">0{index + 1}</span><div><h3>{item.title}</h3><p>{item.text}</p></div><span className="principle-mark" aria-hidden="true">↗</span></article>)}</div>
+        <div className="principles">{principles.map((item, index) => <article className="principle" key={item.title} data-reveal><span className="principle-number">0{index + 1}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}</div>
       </div>
     </section>
   );

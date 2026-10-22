@@ -4,12 +4,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Set by index.html. Checked once at load: if the fallback already revealed the hero, skip the intro.
+const introPending = typeof document !== "undefined" && document.documentElement.classList.contains("intro-pending");
+
 export default function usePageMotion(scope) {
   useLayoutEffect(() => {
+    clearTimeout(window.introFallback);
+    document.documentElement.classList.remove("intro-pending");
     const media = gsap.matchMedia();
     const root = scope.current;
     media.add("(prefers-reduced-motion: no-preference)", () => {
-      gsap.timeline({ defaults: { ease: "power3.out" } })
+      if (introPending) gsap.timeline({ defaults: { ease: "power3.out" } })
         .from(".hero-line > span", { yPercent: 110, duration: 1.05, stagger: 0.12 })
         .from(".hero-image", { clipPath: "inset(0 0 100% 0)", duration: 1.25, clearProps: "clipPath" }, 0.15)
         .from(".hero-inset", { y: 40, opacity: 0, duration: 0.9, clearProps: "transform,opacity" }, 0.65)

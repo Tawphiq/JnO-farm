@@ -47,7 +47,7 @@ export default function App() {
           <div><span>GROWN HERE</span><strong>Crops & plants</strong></div>
           <div><span>RAISED HERE</span><strong>Livestock & fish</strong></div>
           <div><span>MILLED HERE</span><strong>Animal feed</strong></div>
-          <div><span>DELIVERED</span><strong>Across Ghana ↗</strong></div>
+          <div><span>DELIVERED</span><strong>Across Ghana</strong></div>
         </div>
         <Divisions onSelect={setSelectedDivision} />
         <Story />

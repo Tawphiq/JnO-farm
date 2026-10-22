@@ -35,7 +35,7 @@ export default function Contact({ interest, onInterestChange, nameRef }) {
       >
         <div className="page-width contact-grid">
           <div className="contact-copy" data-reveal>
-            <p className="eyebrow"><span className="section-number">06</span> A DIRECT LINE TO J&O</p>
+            <p className="eyebrow"><span className="section-number">05</span> A DIRECT LINE TO J&O</p>
             <h2 id="contact-title">
               What are
               <br />

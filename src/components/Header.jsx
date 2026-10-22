@@ -75,7 +75,8 @@ export default function Header() {
           <a href="#divisions"><span>01</span> The farm</a>
           <a href="#story"><span>02</span> Our roots</a>
           <a href="#difference"><span>03</span> Our approach</a>
-          <a href="#contact"><span>04</span> Talk to us</a>
+          <a href="#trade"><span>04</span> Bulk supply</a>
+          <a href="#contact"><span>05</span> Talk to us</a>
         </nav>
         <a
           className="button button-small header-cta"

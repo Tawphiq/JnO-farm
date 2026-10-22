@@ -4,7 +4,7 @@ export default function Story() {
   return (
     <section className="story-section section-space" id="story" aria-labelledby="story-title">
       <div className="page-width">
-        <div className="story-heading" data-reveal><p className="eyebrow"><span className="section-number">02</span> THE PEOPLE BEHIND THE NAME</p><span className="story-location">ANKWENSU, GHANA ↗</span></div>
+        <div className="story-heading" data-reveal><p className="eyebrow"><span className="section-number">02</span> THE PEOPLE BEHIND THE NAME</p><span className="story-location">ANKWENSU, GHANA</span></div>
         <div className="story-grid">
           <div className="story-art"><Photo name="consultancy" className="story-main" parallax /><Photo name="corn" className="story-inset" parallax sizes="(max-width: 600px) 40vw, 22vw" /><div className="story-monogram" aria-hidden="true">J<span>&</span>O</div><span className="image-caption">HANDS IN THE SOIL. EYES ON WHAT’S NEXT.</span></div>
           <div className="story-copy" data-reveal>

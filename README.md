@@ -22,7 +22,9 @@ npm run build
 npm run preview
 ```
 
-Vite builds the deployable website into `dist/`. Preview serves that build locally,
+Vite builds the deployable website into `dist/`. The build then renders the page
+to static HTML (`src/entry-server.jsx`, `scripts/prerender.mjs`) so the content is
+in `dist/index.html` for search engines and visible before JavaScript loads. Preview serves that build locally,
 normally at http://localhost:4173. Deploy the contents of `dist/` to a static host.
 
 ## Files

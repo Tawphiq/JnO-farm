@@ -5,7 +5,7 @@ export default function Footer() {
     <>
       <footer>
         <div className="page-width">
-          <div className="footer-wordmark" aria-hidden="true"><span>J&O</span><span>ROOTED HERE.<br />GROWING TOGETHER.<span className="footer-arrow">↗</span></span></div>
+          <div className="footer-wordmark" aria-hidden="true"><span>J&O</span><span>ROOTED HERE.<br />GROWING TOGETHER.</span></div>
           <div className="footer-top">
             <a className="brand footer-brand" href="#home">
               <span className="brand-type">
@@ -24,7 +24,7 @@ export default function Footer() {
           </div>
           <div className="footer-bottom">
             <span>
-              © <span>{new Date().getFullYear()}</span> J&O Farm Produce Ltd.
+              © <span suppressHydrationWarning>{new Date().getFullYear()}</span> J&O Farm Produce Ltd.
             </span>
             <span>
               Ghanaian owned.{" "}
