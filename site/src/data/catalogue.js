@@ -2,6 +2,9 @@ export const catalogue = {
   livestock: {
     number: "01",
     title: "Livestock rearing",
+    name: "Livestock",
+    tag: "Reared on the farm",
+    blurb: "Meat & breeding",
     interest: "Livestock rearing",
     intro:
       "Healthy, vaccinated livestock, reared on our integrated farm for meat and breeding stock.",
@@ -12,6 +15,7 @@ export const catalogue = {
       },
       {
         title: "Meat & breeding stock",
+        items: ["Meat animals", "Breeding stock"],
         text: "Speak with our team about meat animals or breeding stock, current availability, quantities and delivery.",
       },
     ],
@@ -20,6 +24,9 @@ export const catalogue = {
   aquaculture: {
     number: "02",
     title: "Aquaculture & fish farming",
+    name: "Fish",
+    tag: "Freshwater farming",
+    blurb: "Tilapia & catfish",
     interest: "Fish farming",
     intro:
       "Tilapia and catfish for pond stocking or the table, available at different growth stages.",
@@ -38,6 +45,9 @@ export const catalogue = {
   crops: {
     number: "03",
     title: "Crops, vegetables & plants",
+    name: "Crops & plants",
+    tag: "From the soil",
+    blurb: "Crops & seedlings",
     interest: "Crops, vegetables & plants",
     intro:
       "From everyday vegetables to commercial crops and the seedlings for your next season.",
@@ -72,6 +82,9 @@ export const catalogue = {
   feed: {
     number: "04",
     title: "J&O Feed — our animal feed mill",
+    name: "Animal feed",
+    tag: "Milled by J&O",
+    blurb: "Our own mill",
     interest: "J&O animal feed",
     intro:
       "We mill our own feed, with options for poultry, pigs, cattle, sheep, goats and fish.",
@@ -102,13 +115,17 @@ export const catalogue = {
   fertilizer: {
     number: "05",
     title: "Fertilizer, imports & exports",
+    name: "Fertilizer & trade",
+    tag: "Supply & export",
+    blurb: "Retail & bulk",
     interest: "Fertilizer, imports & exports",
     intro:
       "Fertilizer for retail and bulk orders, with bulk supply from 27 MT to 500 MT and nationwide delivery.",
     groups: [
       {
         title: "Urea 46%",
-        text: "Granular & prilled urea — direct FOB Tianjin.",
+        items: ["Granular urea", "Prilled urea"],
+        text: "Direct FOB Tianjin.",
       },
       { title: "NPK — all grades", items: ["15-15-15", "20-10-10", "23-10-5"] },
       { title: "Other fertilizers", items: ["MOP", "TSP", "Ammonia sulphate"] },
@@ -126,16 +143,22 @@ export const catalogue = {
   consultancy: {
     number: "06",
     title: "Agro-consultancy & training",
+    name: "Training",
+    tag: "Grow your know-how",
+    blurb: "Agro-consultancy",
     interest: "Agro-consultancy & training",
     intro:
       "Connect with Joseph, Owura and the J&O team to discuss your agricultural goals.",
     groups: [
+      { title: "Services", items: ["Agro-consultancy", "Training"] },
       {
         title: "A conversation about your farm",
         text: "Tell us what you are working on, the support you need, and your experience so far. Our team will discuss the relevant agro-consultancy or training options with you.",
       },
       {
         title: "Planning your enquiry",
+        // Things to mention in an enquiry, not products to add to a list.
+        checklist: true,
         items: [
           "Your farming interests",
           "Your location",

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#183d2b" />
+    <meta name="theme-color" content="#f3f0e5" />
     <meta
       name="description"
       content="J&O means Joseph & Owura. Discover our integrated farm in Ankwensu, Ghana: livestock, fish, crops, animal feed, genuine fertilizer and agricultural training."
@@ -17,21 +17,15 @@
       property="og:description"
       content="Livestock, fish, crops, animal feed, fertilizer and agricultural training from our integrated farm in Ankwensu, Eastern Region, Ghana."
     />
-    <script>
-      // The hero intro animates in from hidden. Keep it hidden until the app starts,
-      // but show it anyway if the app is slow to load (see usePageMotion).
-      if (matchMedia("(prefers-reduced-motion: no-preference)").matches) {
-        document.documentElement.classList.add("intro-pending");
-        window.introFallback = setTimeout(() => document.documentElement.classList.remove("intro-pending"), 3000);
-      }
-    </script>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;650;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..700&family=Newsreader:opsz,wght@6..72,300..600&display=swap"
       rel="stylesheet"
     />
+    <!-- The J&O wordmark only: loads just these three letters. -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&text=J%26O&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>

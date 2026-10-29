@@ -1,102 +1,102 @@
 import { useEffect, useRef, useState } from "react";
+import { whatsappUrl } from "../utils/enquiry.js";
+import Brand from "./Brand.jsx";
+import Icon from "./Icon.jsx";
 
-export default function Header() {
+export const navigation = [
+  { id: "shop", label: "Products" },
+  { id: "order", label: "How to order" },
+  { id: "bulk", label: "Bulk supply" },
+  { id: "about", label: "About us" },
+  { id: "contact", label: "Contact" },
+];
+
+export default function Header({ activeSection, listCount }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const headerRef = useRef(null);
-  const toggleRef = useRef(null);
+  const [overHero, setOverHero] = useState(true);
+  const menuRef = useRef(null);
   useEffect(() => {
-    const handleEscape = (event) => {
-      if (event.key === "Escape" && menuOpen) {
-        setMenuOpen(false);
-        toggleRef.current?.focus();
-      }
-    };
-    const dismissOutside = (event) => {
-      if (!headerRef.current?.contains(event.target)) setMenuOpen(false);
-    };
-    const desktop = window.matchMedia("(min-width: 901px)");
+    const menu = menuRef.current;
+    if (menuOpen && !menu.open) menu.showModal();
+    if (!menuOpen && menu.open) menu.close();
+  }, [menuOpen]);
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)");
     const closeOnDesktop = () => {
       if (desktop.matches) setMenuOpen(false);
     };
-    document.addEventListener("keydown", handleEscape);
-    document.addEventListener("pointerdown", dismissOutside);
-    document.addEventListener("focusin", dismissOutside);
     desktop.addEventListener("change", closeOnDesktop);
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.removeEventListener("pointerdown", dismissOutside);
-      document.removeEventListener("focusin", dismissOutside);
-      desktop.removeEventListener("change", closeOnDesktop);
-    };
-  }, [menuOpen]);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
+  useEffect(() => {
+    // The bar is see-through only while it sits over the hero photo.
+    const hero = document.querySelector(".hero-media");
+    if (!hero) return setOverHero(false);
+    const observer = new IntersectionObserver(([entry]) => setOverHero(entry.isIntersecting), { rootMargin: "-80px 0px 0px 0px" });
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+  const close = () => setMenuOpen(false);
   return (
     <>
-      <div className="announcement">
-        <span>FROM ANKWENSU. FOR GHANA.</span>
-        <a href="tel:+233243503083">
-          Call us <span className="announcement-phone">+233 243 503 083</span>
-        </a>
-      </div>
-      <header className="site-header" ref={headerRef}>
-        <a
-          className="brand"
-          href="#home"
-          aria-label="J&O Farm Produce home"
-          onClick={() => setMenuOpen(false)}
-        >
-          <svg
-            className="brand-symbol"
-            viewBox="0 0 48 52"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M24 44V22M24 31C8 32 6 20 7 13c12 0 19 6 17 18Zm0-9C22 9 30 4 41 4c0 12-5 20-17 18Z"
-              stroke="currentColor"
-              strokeWidth="2.2"
-            />
-            <path
-              d="M8 45c9-6 23-6 32 0M12 50c7-4 17-4 24 0"
-              stroke="currentColor"
-              strokeWidth="1.7"
-            />
-          </svg>
-          <span className="brand-type">
-            J<span className="amp">&</span>O
-            <span className="brand-caption">FARM PRODUCE LTD</span>
-          </span>
-        </a>
-        <nav
-          className={menuOpen ? "open" : ""}
-          onClick={() => setMenuOpen(false)}
-          id="primary-nav"
-          aria-label="Main navigation"
-        >
-          <a href="#divisions"><span>01</span> The farm</a>
-          <a href="#story"><span>02</span> Our roots</a>
-          <a href="#difference"><span>03</span> Our approach</a>
-          <a href="#trade"><span>04</span> Bulk supply</a>
-          <a href="#contact"><span>05</span> Talk to us</a>
+      <header className={`app-bar ${overHero ? "app-bar-clear" : ""}`}>
+        <Brand />
+        <nav className="desktop-nav" aria-label="Main navigation">
+          {navigation.map(({ id, label }) => (
+            <a key={id} href={`#${id}`} aria-current={activeSection === id ? "location" : undefined}>
+              {label}
+            </a>
+          ))}
         </nav>
-        <a
-          className="button button-small header-cta"
-          href="#contact"
-          onClick={() => setMenuOpen(false)}
-        >
-          Enquire <span aria-hidden="true">→</span>
-        </a>
-        <button
-          className="menu-toggle"
-          ref={toggleRef}
-          onClick={() => setMenuOpen((open) => !open)}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-          aria-controls="primary-nav"
-        >
-          <span></span>
-          <span></span>
-        </button>
+        <div className="app-bar-actions">
+          {listCount > 0 && (
+            <a className="list-link" href="#enquiry-form">
+              Your list <span className="count">{listCount}</span>
+            </a>
+          )}
+          <a className="btn btn-outline btn-small app-bar-cta" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
+            WhatsApp us
+          </a>
+          <button className="icon-button menu-button" onClick={() => setMenuOpen(true)} aria-label="Open menu" aria-haspopup="dialog" aria-expanded={menuOpen}>
+            <Icon name="menu" />
+          </button>
+        </div>
       </header>
+      <dialog
+        className="menu"
+        ref={menuRef}
+        aria-label="Menu"
+        onClose={close}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) close();
+        }}
+      >
+        <div className="menu-panel">
+          <div className="menu-head">
+            <Brand onClick={close} />
+            <button className="icon-button" onClick={close} aria-label="Close menu">
+              <Icon name="close" />
+            </button>
+          </div>
+          <nav className="menu-nav" aria-label="Menu">
+            {navigation.map(({ id, label }, index) => (
+              <a key={id} href={`#${id}`} onClick={close} aria-current={activeSection === id ? "location" : undefined}>
+                <span className="menu-index">{String(index + 1).padStart(2, "0")}</span>
+                {label}
+              </a>
+            ))}
+          </nav>
+          <div className="menu-contact">
+            <a className="btn btn-primary btn-block" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
+              <Icon name="chat" /> Chat on WhatsApp
+            </a>
+            <a className="btn btn-outline btn-block" href="tel:+233243503083">
+              <Icon name="phone" /> Call +233 243 503 083
+            </a>
+            <p>Ankwensu, Eastern Region, Ghana</p>
+          </div>
+        </div>
+      </dialog>
     </>
   );
 }

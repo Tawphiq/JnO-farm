@@ -6,7 +6,7 @@ import sharp from "sharp";
 import { photography } from "../src/data/photography.js";
 
 const photos = new URL("../public/assets/photos/", import.meta.url);
-const hero = photography.field;
+const hero = photography.hero;
 const source = fileURLToPath(new URL(`${hero.file}-${hero.large ? 1920 : 1280}.webp`, photos));
 const output = fileURLToPath(new URL("../public/assets/share.jpg", import.meta.url));
 

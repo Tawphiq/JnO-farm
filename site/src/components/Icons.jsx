@@ -1,43 +1,46 @@
 export default function Icons() {
   return (
-    <>
-      <svg
-        className="svg-library"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <defs>
-          <symbol id="icon-sprout" viewBox="0 0 32 32">
-            <path d="M16 28V12m0 10C5 22 4 12 4 12c10-1 13 6 12 10Zm0-8C15 5 27 3 27 3s1 12-11 11ZM7 29h18" />
-          </symbol>
-          <symbol id="icon-cow" viewBox="0 0 32 32">
-            <path d="m7 9-4-4m22 4 4-4M8 10 2 12l5 5m17-7 6 2-5 5M10 8h12l3 16-5 5h-8l-5-5 3-16Zm-1 13h14M12 15h1m6 0h1m-8 10h1m6 0h1" />
-          </symbol>
-          <symbol id="icon-grain" viewBox="0 0 32 32">
-            <path d="M16 30V4m0 19C5 22 5 15 5 15c9 0 11 8 11 8Zm0-7C5 15 5 8 5 8c9 0 11 8 11 8Zm0 3c11-1 11-8 11-8-9 0-11 8-11 8Zm0-7c11-1 11-8 11-8-9 0-11 8-11 8Z" />
-          </symbol>
-          <symbol id="icon-truck" viewBox="0 0 32 32">
-            <path d="M3 23V8h17v15m0-10h6l4 6v4h-4m-13 0h7M3 23h3M23 13v6h7" />
-            <circle cx="9" cy="24" r="3" />
-            <circle cx="23" cy="24" r="3" />
-          </symbol>
-          <symbol id="icon-cycle" viewBox="0 0 32 32">
-            <path d="M27 12A12 12 0 0 0 6 8l-3 4m0-7v7h7M5 20a12 12 0 0 0 21 4l3-4m0 7v-7h-7" />
-          </symbol>
-          <symbol id="icon-people" viewBox="0 0 32 32">
-            <circle cx="11" cy="10" r="5" />
-            <path d="M2 28v-4a9 9 0 0 1 18 0v4M21 5a5 5 0 0 1 0 10m3 3a8 8 0 0 1 6 8v2" />
-          </symbol>
-          <symbol id="icon-pin" viewBox="0 0 32 32">
-            <path d="M26 13c0 8-10 16-10 16S6 21 6 13a10 10 0 0 1 20 0Z" />
-            <circle cx="16" cy="13" r="3" />
-          </symbol>
-          <symbol id="icon-chat" viewBox="0 0 32 32">
-            <path d="M28 15a12 12 0 0 1-18 11l-7 3 2-8a12 12 0 1 1 23-6Z" />
-            <path d="m11 9-2 3c1 6 5 10 11 11l3-3-5-3-2 2-4-4 2-2-3-4Z" />
-          </symbol>
-        </defs>
-      </svg>
-    </>
+    <svg className="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="icon-chat" viewBox="0 0 32 32">
+          <path d="M28 15a12 12 0 0 1-18 11l-7 3 2-8a12 12 0 1 1 23-6Z" />
+          <path d="m11 9-2 3c1 6 5 10 11 11l3-3-5-3-2 2-4-4 2-2-3-4Z" />
+        </symbol>
+        <symbol id="icon-phone" viewBox="0 0 32 32">
+          <path d="M9 4h5l2 7-3 2a17 17 0 0 0 7 7l2-3 7 2v5a3 3 0 0 1-3 3C14 27 5 18 5 7a3 3 0 0 1 3-3h1Z" />
+        </symbol>
+        <symbol id="icon-home" viewBox="0 0 32 32">
+          <path d="M4 15 16 5l12 10M8 12v15h16V12M13 27v-8h6v8" />
+        </symbol>
+        <symbol id="icon-bag" viewBox="0 0 32 32">
+          <path d="M6 11h20l-2 17H8L6 11Zm5 0V9a5 5 0 0 1 10 0v2" />
+        </symbol>
+        <symbol id="icon-search" viewBox="0 0 32 32">
+          <circle cx="14" cy="14" r="9" />
+          <path d="m21 21 7 7" />
+        </symbol>
+        <symbol id="icon-menu" viewBox="0 0 32 32">
+          <path d="M5 10h22M5 16h22M5 22h22" />
+        </symbol>
+        <symbol id="icon-close" viewBox="0 0 32 32">
+          <path d="M8 8l16 16M24 8 8 24" />
+        </symbol>
+        <symbol id="icon-plus" viewBox="0 0 32 32">
+          <path d="M16 7v18M7 16h18" />
+        </symbol>
+        <symbol id="icon-check" viewBox="0 0 32 32">
+          <path d="m7 16.5 6 6L25 10" />
+        </symbol>
+        <symbol id="icon-arrow" viewBox="0 0 32 32">
+          <path d="M5 16h22m-8-8 8 8-8 8" />
+        </symbol>
+        <symbol id="icon-external" viewBox="0 0 32 32">
+          <path d="M10 22 22 10m-10 0h10v10" />
+        </symbol>
+        <symbol id="icon-up" viewBox="0 0 32 32">
+          <path d="M16 27V5m-8 8 8-8 8 8" />
+        </symbol>
+      </defs>
+    </svg>
   );
 }
