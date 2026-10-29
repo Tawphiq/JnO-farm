@@ -11,13 +11,13 @@ const figures = [
 export default function Bulk({ onEnquire }) {
   return (
     <section className="bulk" id="bulk" data-nav-section="bulk" aria-labelledby="bulk-title">
-      <Photo name="bulk" sizes="100vw" />
+      <Photo name="bulk" parallax={14} sizes="100vw" />
       <div className="container bulk-grid">
         <div className="bulk-copy">
           <p className="label label-light">Bulk supply</p>
           <h2 id="bulk-title">Big plans? Let’s talk tonnage.</h2>
           <p>From fertilizer for your next planting season to raw cashew nuts for export, we connect farmers and businesses with the supply they need.</p>
-          <button type="button" className="btn btn-light" onClick={onEnquire}>
+          <button type="button" className="btn btn-sun" onClick={onEnquire}>
             Request a bulk quote <Icon name="arrow" />
           </button>
         </div>

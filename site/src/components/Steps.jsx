@@ -9,10 +9,10 @@ const steps = [
 
 export default function Steps() {
   return (
-    <section className="section" id="order" data-nav-section="order" aria-labelledby="order-title">
+    <section className="section steps-section" id="order" data-nav-section="order" aria-labelledby="order-title">
       <div className="container steps-grid">
         <div className="steps-media">
-          <Photo name="order" sizes="(max-width: 1023px) 100vw, 50vw" />
+          <Photo name="order" parallax={8} sizes="(max-width: 1023px) 100vw, 50vw" />
         </div>
         <div className="steps-body">
           <p className="label">How ordering works</p>

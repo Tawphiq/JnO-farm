@@ -13,7 +13,7 @@ export default function About() {
       <div className="container about-grid">
         <div className="about-media">
           <div className="about-photo">
-            <Photo name="about" sizes="(max-width: 1023px) 100vw, 50vw" />
+            <Photo name="about" parallax={8} sizes="(max-width: 1023px) 100vw, 50vw" />
           </div>
           <div className="about-photo-detail">
             <Photo name="aboutDetail" sizes="(max-width: 1023px) 45vw, 22vw" />

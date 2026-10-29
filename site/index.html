@@ -26,6 +26,11 @@
     />
     <!-- The J&O wordmark only: loads just these three letters. -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&text=J%26O&display=swap" rel="stylesheet" />
+    <!-- Holds back the hero copy until its entrance animation starts (src/hooks/usePageMotion.js).
+         styles.css reveals it after 3 seconds regardless, in case the script never runs. -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("intro");
+    </script>
   </head>
   <body>
     <div id="root"></div>

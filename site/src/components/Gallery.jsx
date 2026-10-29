@@ -1,6 +1,7 @@
 import Photo from "./Photo.jsx";
 
 // The market scene comes last, away from the copy about the J&O team.
+// From 1024px the section pins and the photos scroll sideways (usePageMotion).
 const photos = [
   { name: "dusk", caption: "A fish farm at dusk" },
   { name: "tilapia", caption: "Tilapia" },

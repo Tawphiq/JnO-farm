@@ -15,8 +15,8 @@ export default function Categories() {
         <ul className="category-grid">
           {Object.entries(catalogue).map(([id, division], index) => (
             <li key={id}>
-              <a className="category" href={`#shop-${id}`}>
-                <Photo name={id} decorative sizes="(max-width: 639px) 50vw, 33vw" />
+              <a className="category" href={`#shop-${id}`} data-division={id}>
+                <Photo name={id} decorative parallax={6} sizes="(max-width: 639px) 50vw, 33vw" />
                 <span className="category-text">
                   <span className="category-index">{String(index + 1).padStart(2, "0")}</span>
                   <strong>{division.name}</strong>

@@ -2,7 +2,7 @@
 
 A responsive React website built with Vite for Joseph & Owura Farm Produce Ltd.
 
-The site works like a shopping app, designed for phones first: a full-screen photo hero, photo category tiles, a searchable farm shop where visitors tap products to build an enquiry list, and a bottom tab bar with Call and WhatsApp. The look is editorial and photo-led: square corners, thin rules instead of boxed cards, and a full-width photo for every division. It keeps the J&O logo and the forest green, clay orange and cream colours. Headings use Newsreader (a serif) and text uses Hanken Grotesk; Barlow Condensed is loaded only for the J&O wordmark. Prices are never shown: every path ends in a WhatsApp conversation with the team.
+The site works like a shopping app, designed for phones first: a full-screen photo hero, photo category tiles, a searchable farm shop where visitors tap products to build an enquiry list, and a floating bottom tab bar with Call and WhatsApp. The look is editorial and photo-led: square corners, thin rules and large photos. It keeps the J&O logo and the forest green, clay orange and cream colours, and adds harvest colours around them: maize gold for highlights, a sand, a deep lagoon and a blush section between the cream ones, and a colour of its own for each division (clay, lagoon, leaf, maize, hibiscus and indigo, set by `data-division` in `src/styles.css`). Headings use Newsreader (a serif) and text uses Hanken Grotesk; Barlow Condensed is loaded only for the J&O wordmark. Prices are never shown: every path ends in a WhatsApp conversation with the team.
 
 ## Development
 
@@ -32,9 +32,10 @@ normally at http://localhost:4173. Deploy the contents of `dist/` to a static ho
 - `index.html`: page metadata and Vite entry point
 - `src/main.jsx`: React application entry point
 - `src/App.jsx`: page composition, the enquiry list and the selected division
-- `src/components/`: page sections, navigation, the farm shop (`Shop.jsx`), the enquiry form and the phone dock (`Dock.jsx`)
+- `src/components/`: page sections, navigation, the farm shop (`Shop.jsx`) and its product sheets (`DivisionSheet.jsx`), the enquiry form and the phone dock (`Dock.jsx`)
 - `src/data/catalogue.js`: divisions and their products. Each division has a short `name`, `tag`, `blurb` and `icon` for the shop; groups with `checklist: true` are tips for an enquiry rather than products
 - `src/styles.css`: responsive design
+- `src/hooks/usePageMotion.js`, `src/utils/motion.js`: GSAP scroll motion and shared animation helpers
 - `public/assets/`: locally hosted agricultural images and favicon
 - `vite.config.js`: Vite configuration and React plugin
 
@@ -46,11 +47,11 @@ Agricultural photographs are real, illustrative stock photography from Pexels, n
 
 Images are served locally from `public/assets/photos/` as responsive WebP files. The hero is prioritised; subsequent images load lazily. To re-download the curated image set, run `node scripts/download-photos.mjs` from this directory. Fonts are served through Google Fonts with system fallbacks.
 
-GSAP provides a short hero introduction. Content and primary actions remain visible throughout loading; photos and section headings stay still during scrolling. Animation setup lives in `src/hooks/usePageMotion.js`. Operating-system reduced-motion preferences disable the animations and transitions.
+GSAP (with ScrollTrigger and SplitText) animates the page, set up in `src/hooks/usePageMotion.js`: the hero headline rises word by word, section headings rise line by line, photos drift inside their frames as the page scrolls (Photo's `parallax` prop), the ordering steps fill in as they pass, and from 1024px the gallery pins and scrolls sideways. The entrances play every time a section scrolls into view, not just the first time, and run back when it scrolls away below; the hero copy rises again whenever the page returns to the top. Only the hero copy waits for the script (the `intro` class in `index.html`), and CSS reveals it after three seconds regardless. Operating-system reduced-motion preferences turn off all of this.
 
-Every product is listed in the page HTML, so searches such as "NPK 15-15-15" or "layer mash" can match it. In the shop, the search box filters products across all divisions, and the category tabs follow the scroll. Tapping a product adds it to the enquiry list, which can be sent as one WhatsApp message or reviewed in the enquiry form with quantities and a delivery location. Each division also has its own WhatsApp and form shortcuts, and the bulk quote button opens the form with fertilizer preselected. `src/utils/enquiry.js` builds the WhatsApp links and messages using the business phone number.
+Each division in the shop is a card in its own colour, previewing its first few products. Its button ("See all 7 products") opens the division's product sheet, a full-screen `<dialog>` that ripples out from the button in the division's colour and lists every product; the arrows (or arrow keys) move to the next division, and closing shrinks the sheet back into the card it came from. The sheets are in the page HTML while closed, so every product is listed there and searches such as "NPK 15-15-15" or "layer mash" can match it. In the shop, the search box filters products across all divisions (the sheets then step through the matching divisions only), and the category tabs follow the scroll. Tapping a product adds it to the enquiry list, which can be sent as one WhatsApp message or reviewed in the enquiry form with quantities and a delivery location. Each division also has its own WhatsApp and form shortcuts, and the bulk quote button opens the form with fertilizer preselected. `src/utils/enquiry.js` builds the WhatsApp links and messages using the business phone number.
 
-Below 1024px the header shows the logo and a menu button (a slide-in `<dialog>`), and a dock at the bottom of the screen holds the tab bar (Home, Products, Call, WhatsApp) and, once products are added, the enquiry list bar. The dock hides while a text field is focused, so it never sits over the keyboard. From 1024px the header shows the full navigation, and the shop gets a sticky sidebar with search, categories and the enquiry list. `src/styles.css` is written phone-first, with additions at 640px and 1024px.
+Below 1024px the header shows the logo and a menu button. The menu is a `<dialog>` that opens out from the menu button, its links rising into place; a link closes the menu before going to its section. A dock floating at the bottom of the screen, out of sight until half the hero has scrolled away, holds a frosted-glass tab bar (Home, Products, Call, WhatsApp) with a highlight that slides to the current tab and, once products are added, the enquiry list bar. The dock hides while a text field is focused, so it never sits over the keyboard. From 1024px the header shows the full navigation, and the shop gets a sticky sidebar with search, categories and the enquiry list. `src/styles.css` is written phone-first, with additions at 640px and 1024px.
 
 Deployment configuration is in `.openai/hosting.json`.
 

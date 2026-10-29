@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { catalogue } from "./data/catalogue.js";
 import Header from "./components/Header.jsx";
 import Hero from "./components/Hero.jsx";
@@ -22,6 +22,16 @@ export default function App() {
   const pageRef = useRef(null);
   const activeSection = useActiveSection("nav-section", 120);
   usePageMotion(pageRef);
+  useEffect(() => {
+    // Open dialogs hide the page scrollbar; styles.css pads the page by its width instead.
+    const measure = () => {
+      if (document.querySelector("dialog[open]")) return;
+      document.documentElement.style.setProperty("--scrollbar", `${window.innerWidth - document.documentElement.clientWidth}px`);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   function goToForm() {
     requestAnimationFrame(() => {

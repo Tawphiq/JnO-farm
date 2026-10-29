@@ -1,17 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 import { catalogue } from "../data/catalogue.js";
 import { divisionEnquiryUrl, listEnquiryUrl, makePick, whatsappUrl } from "../utils/enquiry.js";
+import { flyToList } from "../utils/motion.js";
 import useActiveSection from "../hooks/useActiveSection.js";
+import DivisionSheet from "./DivisionSheet.jsx";
 import Icon from "./Icon.jsx";
 import Photo from "./Photo.jsx";
 import PickList from "./PickList.jsx";
+import ProductChip from "./ProductChip.jsx";
 
-const divisions = Object.entries(catalogue).map(([id, division]) => ({ id, ...division }));
+// Each card previews this many products; its sheet lists them all.
+const previewSize = 4;
+const divisions = Object.entries(catalogue).map(([id, division]) => ({
+  id,
+  ...division,
+  products: division.groups.flatMap((group) => (group.checklist ? [] : (group.items ?? []).map((item) => makePick(id, division, group, item)))),
+}));
 const normalize = (text) => text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 export default function Shop({ picks, onTogglePick, onRemovePick, onReview, onEnquire }) {
   const [query, setQuery] = useState("");
   const [announcement, setAnnouncement] = useState("");
+  // The open product sheet, and how it should move: `origin` (opened from a button), `step` (from the
+  // previous or next sheet) or `after` (run once it has closed).
+  const [sheet, setSheet] = useState({ id: null });
+  const lastStep = useRef(0);
   const tabsRef = useRef(null);
   const currentId = useActiveSection("shop-section", 150);
 
@@ -33,7 +46,10 @@ export default function Shop({ picks, onTogglePick, onRemovePick, onReview, onEn
     return { ...division, groups, count, hidden: searching && count === 0 };
   });
   const total = results.reduce((sum, division) => sum + division.count, 0);
-  const firstShown = results.find((division) => !division.hidden)?.id;
+  const shownIds = results.filter((division) => !division.hidden).map((division) => division.id);
+  // Sheets step through the divisions the search is showing, wrapping around at either end.
+  const neighbour = (id, direction) => shownIds.at((shownIds.indexOf(id) + direction) % shownIds.length) ?? id;
+  const firstShown = shownIds[0];
   const activeId = results.some((division) => division.id === currentId && !division.hidden) ? currentId : firstShown;
   useEffect(() => {
     // On phones the tabs scroll sideways; keep the current category's tab in view.
@@ -44,11 +60,26 @@ export default function Shop({ picks, onTogglePick, onRemovePick, onReview, onEn
     tabs.scrollTo({ left: tab.offsetLeft - 16, behavior: reduce ? "instant" : "smooth" });
   }, [activeId]);
 
-  function toggle(pick) {
+  function toggle(pick, chip) {
     const removing = pickedIds.has(pick.id);
     const count = picks.length + (removing ? -1 : 1);
     onTogglePick(pick);
+    if (!removing) flyToList(chip);
     setAnnouncement(`${pick.item} ${removing ? "removed from" : "added to"} your enquiry list. ${count} ${count === 1 ? "product" : "products"} in the list.`);
+  }
+  function openSheet(id, event) {
+    const box = event.currentTarget.getBoundingClientRect();
+    setSheet({ id, origin: { x: box.left + box.width / 2, y: box.top + box.height / 2 } });
+  }
+  function stepSheet(direction) {
+    // Let one sheet finish sliding in before the next.
+    const id = neighbour(sheet.id, direction);
+    if (id === sheet.id || performance.now() - lastStep.current < 750) return;
+    lastStep.current = performance.now();
+    setSheet({ id, step: direction });
+  }
+  function closeSheet(after) {
+    setSheet({ id: null, after });
   }
 
   return (
@@ -75,14 +106,14 @@ export default function Shop({ picks, onTogglePick, onRemovePick, onReview, onEn
             </div>
             <nav className="category-tabs" ref={tabsRef} aria-label="Product categories">
               {results.map((division) => (
-                <a key={division.id} href={`#shop-${division.id}`} aria-current={activeId === division.id ? "location" : undefined} data-empty={division.hidden || undefined}>
+                <a key={division.id} href={`#shop-${division.id}`} data-division={division.id} aria-current={activeId === division.id ? "location" : undefined} data-empty={division.hidden || undefined}>
                   {division.name}
                   {searching && <span className="count">{division.count}</span>}
                 </a>
               ))}
             </nav>
             <div className="list-card" aria-labelledby="list-card-title">
-              <h3 id="list-card-title">
+              <h3 id="list-card-title" data-list-target>
                 Your enquiry list
                 {picks.length > 0 && <span className="count">{picks.length}</span>}
               </h3>
@@ -103,61 +134,64 @@ export default function Shop({ picks, onTogglePick, onRemovePick, onReview, onEn
             <p className="search-status" aria-live="polite">
               {searching && total > 0 && `${total} ${total === 1 ? "product matches" : "products match"} “${query.trim()}”`}
             </p>
-            {results.map((division, index) => (
-              <article key={division.id} className="division" id={`shop-${division.id}`} data-shop-section={division.id} hidden={division.hidden} aria-labelledby={`shop-${division.id}-title`}>
-                {!searching && (
-                  <div className="division-media">
-                    <Photo name={division.id} decorative sizes="(max-width: 1023px) 100vw, 880px" />
+            {results.map((division, index) => {
+              const preview = division.products.slice(0, previewSize);
+              const hasMore = division.products.length > preview.length;
+              return (
+                <article key={division.id} className={`division ${searching ? "division-results" : ""}`} id={`shop-${division.id}`} data-shop-section={division.id} data-division={division.id} hidden={division.hidden} aria-labelledby={`shop-${division.id}-title`}>
+                  {/* Hidden rather than removed while searching, so their scroll motion survives. */}
+                  <div className="division-media" hidden={searching}>
+                    <Photo name={division.id} decorative parallax={8} sizes="(max-width: 1023px) 100vw, 480px" />
                   </div>
-                )}
-                <header className="division-head">
-                  <p className="label">{String(index + 1).padStart(2, "0")} — {division.tag}</p>
-                  <h3 id={`shop-${division.id}-title`}>{division.name}</h3>
-                </header>
-                {!searching && <p className="division-intro">{division.intro}</p>}
-                <div className="product-groups">
-                  {division.groups.filter((group) => !group.hidden).map((group) => (
-                    <div className={`product-group ${group.checklist ? "product-group-checklist" : ""}`} key={group.title}>
-                      <h4>{group.title}</h4>
-                      {group.text && !searching && <p>{group.text}</p>}
-                      {group.checklist ? (
-                        <ul className="checklist">
-                          {group.shown.map((item) => <li key={item}>{item}</li>)}
-                        </ul>
-                      ) : group.shown.length > 0 && (
-                        <ul className="chips">
-                          {group.shown.map((item) => {
-                            const pick = makePick(division.id, division, group, item);
-                            const selected = pickedIds.has(pick.id);
-                            return (
-                              <li key={item}>
-                                <button type="button" className="chip" aria-pressed={selected} onClick={() => toggle(pick)}>
-                                  <Icon name={selected ? "check" : "plus"} />
-                                  {item}
-                                </button>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                {!searching && (
-                  <footer className="division-foot">
-                    <p className="division-note">{division.note}</p>
+                  <div className="division-body">
+                    <header className="division-head">
+                      <p className="label">{String(index + 1).padStart(2, "0")} — {division.tag}</p>
+                      <h3 id={`shop-${division.id}-title`}>{division.name}</h3>
+                    </header>
+                    <p className="division-intro" hidden={searching}>{division.intro}</p>
+                    <ul className="chips division-preview" hidden={searching} aria-label={`Some of our ${division.name.toLowerCase()} products`}>
+                      {preview.map((pick) => (
+                        <li key={pick.id}>
+                          <ProductChip pick={pick} selected={pickedIds.has(pick.id)} onToggle={toggle} />
+                        </li>
+                      ))}
+                    </ul>
+                    {searching && (
+                      <div className="product-groups">
+                        {division.groups.filter((group) => !group.hidden).map((group) => (
+                          <div className="product-group" key={group.title}>
+                            <h4>{group.title}</h4>
+                            <ul className="chips">
+                              {group.shown.map((item) => {
+                                const pick = makePick(division.id, division, group, item);
+                                return (
+                                  <li key={item}>
+                                    <ProductChip pick={pick} selected={pickedIds.has(pick.id)} onToggle={toggle} />
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                     <div className="division-actions">
-                      <a className="btn btn-outline btn-small" href={divisionEnquiryUrl(division)} target="_blank" rel="noopener noreferrer">
-                        <Icon name="chat" /> Ask on WhatsApp<span className="sr-only"> about {division.name.toLowerCase()}</span>
-                      </a>
-                      <button type="button" className="text-link" onClick={() => onEnquire(division)}>
-                        Use the enquiry form
+                      <button type="button" className="btn btn-accent explore" id={`explore-${division.id}`} onClick={(event) => openSheet(division.id, event)} aria-haspopup="dialog">
+                        {hasMore ? (
+                          <>See all {division.products.length} products<span className="sr-only"> in {division.name}</span></>
+                        ) : (
+                          <>More about {division.name.toLowerCase()}</>
+                        )}
+                        <Icon name="arrow" />
                       </button>
+                      <a className="icon-button icon-button-round" href={divisionEnquiryUrl(division)} target="_blank" rel="noopener noreferrer" aria-label={`Ask about ${division.name.toLowerCase()} on WhatsApp`}>
+                        <Icon name="chat" />
+                      </a>
                     </div>
-                  </footer>
-                )}
-              </article>
-            ))}
+                  </div>
+                </article>
+              );
+            })}
             {searching && total === 0 && (
               <div className="empty-state">
                 <h3>No products match “{query.trim()}”</h3>
@@ -171,6 +205,26 @@ export default function Shop({ picks, onTogglePick, onRemovePick, onReview, onEn
           </div>
         </div>
       </div>
+      {/* Every product is in the page HTML through these sheets, closed until opened. */}
+      {divisions.map((division, index) => (
+        <DivisionSheet
+          key={division.id}
+          division={division}
+          index={index}
+          total={divisions.length}
+          previous={catalogue[neighbour(division.id, -1)].name}
+          next={catalogue[neighbour(division.id, 1)].name}
+          open={sheet.id === division.id}
+          motion={sheet}
+          picks={picks}
+          pickedIds={pickedIds}
+          onToggle={toggle}
+          onStep={stepSheet}
+          onClose={() => closeSheet()}
+          onEnquire={() => closeSheet(() => onEnquire(division))}
+          onReview={() => closeSheet(onReview)}
+        />
+      ))}
       <p className="sr-only" aria-live="polite">{announcement}</p>
     </section>
   );
